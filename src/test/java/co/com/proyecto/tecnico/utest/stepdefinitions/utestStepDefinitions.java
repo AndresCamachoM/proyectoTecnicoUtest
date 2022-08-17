@@ -1,14 +1,16 @@
 package co.com.proyecto.tecnico.utest.stepdefinitions;
 
+import co.com.proyecto.tecnico.utest.model.FormUser;
 import co.com.proyecto.tecnico.utest.questions.QuestionForm;
 import co.com.proyecto.tecnico.utest.tasks.*;
+import cucumber.api.DataTable;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
+import java.util.List;
 
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -29,16 +31,36 @@ public class utestStepDefinitions {
 
 
     @When("He register with your valid information")
-    public void HeRegisterWithYourValidInformation() {
+    public void HeRegisterWithYourValidInformation(List<FormUser> FormUser) throws Throwable{
         theActorInTheSpotlight().attemptsTo(
-                BasicInformation.theForm("Camilo", "Contreras", "CContreras@gmail.com", "Spanish"),
-                Location.theForm("Argentina", 131331, "Buenos Aires"),
-                Device.theForm("Linux", "Ubuntu", "Spanish", "Apple", "iPhone 4", "iOS 11.2"),
-                LastInformation.theForm("Password-123456")
+                BasicInformation.firstStep(
+                        FormUser.get(0).getStrFirstName(),
+                        FormUser.get(0).getStrLastName(),
+                        FormUser.get(0).getStrEmail(),
+                        FormUser.get(0).getStrLanguage(),
+                        FormUser.get(0).getStrMonth(),
+                        FormUser.get(0).getStrDay(),
+                        FormUser.get(0).getStrYear()
+                ),
+                Location.secondStep(
+                        FormUser.get(0).getStrCountry(),
+                        FormUser.get(0).getStrCodePostal(),
+                        FormUser.get(0).getStrCity()
+                        ),
+                Device.thirdStep(
+                        FormUser.get(0).getStrComputer(),
+                        FormUser.get(0).getStrVersion(),
+                        FormUser.get(0).getStrDeviceLanguage(),
+                        FormUser.get(0).getStrMobile(),
+                        FormUser.get(0).getStrModel(),
+                        FormUser.get(0).getStrOperatingSystem()
+                        ),
+                LastInformation.fourthStep(
+                        FormUser.get(0).getStrPassword(),
+                        FormUser.get(0).getStrPassword()
+                )
         );
     }
-
-
 
     @Then("He should go to the welcome page")
     public void HeShouldGoToTheWelcomePage() {
